@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h5 class="card-header text-center">Weather Dashboard</h5>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Search for a city:</h5>
+              <div class="input-group mb-3">
+                <input id="city-input" type="text" class="form-control" />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    id="find-city"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                  <h5 class="city"></h5>
+                  <div class="temperature"></div>
+                  <div class="humidity"></div> 
+                  <div class="wind-speed"></div>
+                  <div class="uv-index"></div>  
+                </div>
+              </div>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis ducimus perspiciatis minima animi facilis sunt impedit laborum eligendi, autem asperiores nisi a! Perspiciatis quam optio totam eaque enim, modi veniam?</p>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+
+        $("#find-city").on("click", function(event) {
+            event.preventDefault();
+            var city = $("#city-input").val();
+            console.log(city);
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=e23ebbd1d6aa5006fb9f4b969e7519e2";
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+
+            }).then(function(response) {
+                console.log(queryURL);
+                console.log(response);
+                $(".city").text(response.name);
+                $(".humidity").text("Humidity: " + response.main.humidity);
+                $(".wind-speed").text("Wind Speed: " + response.wind.speed);
+                var tempF = (response.main.temp - 273.15) * 1.80 + 32;
+                console.log(tempF);
+                $(".temperature").text("Temperature: " + tempF.toFixed());
+                
+            })
+
+        })
+
+    </script>
+  </body>
+</html>
